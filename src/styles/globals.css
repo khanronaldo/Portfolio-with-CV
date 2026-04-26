@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── GOOGLE FONTS ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Jost:wght@200;300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* ─── DESIGN TOKENS ────────────────────────────────── */
+:root {
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+  --font-greatvibes: 'Great Vibes', cursive;
+  --font-jost:      'Jost', sans-serif;
+  --font-space:     'Space Grotesk', sans-serif;
+
+  /* Aqua Palette */
+  --c1: #07beb8;   /* Light Sea Green  */
+  --c2: #3dccc7;   /* Strong Cyan      */
+  --c3: #68d8d6;   /* Pearl Aqua       */
+  --c4: #9ceaef;   /* Icy Aqua light   */
+  --c5: #c4fff9;   /* Icy Aqua pale    */
+
+  /* Semantic */
+  --bg:        #020d0d;
+  --bg2:       #041414;
+  --surface:   rgba(7,190,184,0.04);
+  --deep-text: #e8fffe;
+  --muted-text:#7ab8b6;
+  --border:    rgba(61,204,199,0.15);
+
+  /* Glow shadows */
+  --glow-sm:  0 0 12px rgba(61,204,199,0.25);
+  --glow-md:  0 0 30px rgba(61,204,199,0.3);
+  --glow-lg:  0 0 60px rgba(61,204,199,0.2);
+
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-space);
+  background: var(--bg);
+  color: var(--deep-text);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@media (hover: none) { body { cursor: auto; } }
+
+/* ─── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--c1), var(--c3));
+  border-radius: 2px;
+}
+
+/* ─── CUSTOM CURSOR ─────────────────────────────────── */
+#cursor-dot {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c3);
+  pointer-events: none;
+  will-change: transform;
+  transition: width .25s var(--ease-spring), height .25s var(--ease-spring), background .25s;
+}
+#cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9998;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(61,204,199,0.55);
+  pointer-events: none;
+  will-change: transform;
+  transition: width .4s var(--ease-spring), height .4s var(--ease-spring), border-color .3s, opacity .3s;
+  opacity: .7;
+}
+#cursor-dot.hovering  { width: 10px; height: 10px; background: var(--c2); }
+#cursor-ring.hovering { width: 54px; height: 54px; border-color: rgba(61,204,199,.25); opacity: .4; }
+@media (hover:none) { #cursor-dot, #cursor-ring { display:none; } body { cursor: auto; } }
+
+/* ─── NOISE OVERLAY ─────────────────────────────────── */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: 160px 160px; opacity: .5;
+}
+
+/* ─── PAGE LOADER ───────────────────────────────────── */
+#page-loader {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+  background: var(--bg);
+  transition: opacity .9s ease, visibility .9s ease;
+}
+#page-loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.loader-rings {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.loader-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid transparent;
+}
+.loader-ring:nth-child(1){
+  width: 280px; height: 280px;
+  border-color: rgba(7,190,184,.12);
+  animation: spinCW 8s linear infinite;
+}
+.loader-ring:nth-child(2){
+  width: 200px; height: 200px;
+  border-color: rgba(61,204,199,.18);
+  animation: spinCCW 6s linear infinite;
+}
+.loader-ring:nth-child(3){
+  width: 130px; height: 130px;
+  border-color: rgba(104,216,214,.22);
+  animation: spinCW 4s linear infinite;
+}
+@keyframes spinCW  { to { transform: rotate(360deg);  } }
+@keyframes spinCCW { to { transform: rotate(-360deg); } }
+
+.loader-name {
+  position: relative; z-index: 2;
+  font-family: var(--font-greatvibes);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  background: linear-gradient(135deg, var(--c3), var(--c5), var(--c2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0; animation: ldFade .8s var(--ease-spring) .4s forwards;
+}
+.loader-bar-wrap {
+  position: relative; z-index: 2;
+  width: 200px; height: 1px;
+  background: rgba(61,204,199,.12); overflow: hidden;
+}
+.loader-bar {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--c1), var(--c3), var(--c5));
+  animation: ldBar 1.8s var(--ease-spring) .3s forwards;
+}
+.loader-sub {
+  position: relative; z-index: 2;
+  font-family: var(--font-space); font-weight: 300;
+  font-size: .62rem; letter-spacing: .55em; text-transform: uppercase;
+  color: rgba(156,234,239,.4);
+  opacity: 0; animation: ldFade .6s ease 1.2s forwards;
+}
+@keyframes ldFade { to { opacity: 1; } }
+@keyframes ldBar  { to { width: 100%; } }
+
+/* ─── SECTION DIVIDER ───────────────────────────────── */
+.section-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c1), transparent);
+  opacity: .2;
+}
+
+/* ─── FADE-UP REVEAL ────────────────────────────────── */
+.fade-up {
+  opacity: 0; transform: translateY(36px);
+  transition: opacity .9s var(--ease-spring), transform .9s var(--ease-spring);
+}
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ─── GLASS CARD ─────────────────────────────────────── */
+.glass {
+  background: rgba(7,190,184,.04);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+/* ─── AQUA SHIMMER TEXT ──────────────────────────────── */
+.shimmer-text {
+  background: linear-gradient(90deg, var(--c3) 0%, var(--c5) 40%, var(--c2) 60%, var(--c3) 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 5s linear infinite;
+}
+@keyframes shimmer { to { background-position: 250% center; } }
+
+/* ─── GLOW PULSE ─────────────────────────────────────── */
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(61,204,199,.15); }
+  50%       { box-shadow: 0 0 40px rgba(61,204,199,.4); }
+}
+
+/* ─── PETAL FLOAT (BUBBLES) ─────────────────────────── */
+@keyframes bubbleFloat {
+  0%   { transform: translateY(0) translateX(0) scale(1);   opacity: 0; }
+  10%  { opacity: .6; }
+  90%  { opacity: .2; }
+  100% { transform: translateY(-100vh) translateX(var(--dx)) scale(.7); opacity: 0; }
+}
+
+/* ─── SKILL TAG ──────────────────────────────────────── */
+.skill-tag {
+  cursor: none;
+  transition: transform .3s var(--ease-back), box-shadow .3s ease, background .3s ease, color .3s;
+}
+.skill-tag:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(61,204,199,.35);
+  background: linear-gradient(135deg, var(--c1), var(--c2)) !important;
+  color: #020d0d !important;
+  border-color: transparent !important;
+}
+
+/* ─── CV MODAL ───────────────────────────────────────── */
+.cv-modal-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(2,13,13,.85);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s ease;
+  padding: 20px;
+}
+.cv-modal-overlay.open { opacity: 1; pointer-events: all; }
+.cv-modal {
+  width: min(92vw, 720px); max-height: 88vh; overflow-y: auto;
+  transform: scale(.9) translateY(24px);
+  transition: transform .5s var(--ease-back);
+  border-radius: 24px;
+  background: #031a1a;
+  border: 1px solid rgba(61,204,199,.2);
+  box-shadow: 0 40px 100px rgba(7,190,184,.15);
+}
+.cv-modal-overlay.open .cv-modal { transform: scale(1) translateY(0); }
+.cv-modal::-webkit-scrollbar { width: 3px; }
+.cv-modal::-webkit-scrollbar-thumb { background: var(--c2); }
+
+/* ─── MARQUEE ────────────────────────────────────────── */
+@keyframes marqueeLeft  { from { transform: translateX(0); }  to { transform: translateX(-50%); } }
+@keyframes marqueeRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+/* ─── SCROLL INDICATOR ───────────────────────────────── */
+@keyframes scrollDrop {
+  0%   { transform: translateY(0) scaleY(0); transform-origin: top; opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { transform: translateY(0) scaleY(1); transform-origin: top; }
+  71%  { transform-origin: bottom; }
+  100% { transform: translateY(10px) scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+/* ─── PARALLAX LAYERS (JS sets --py) ─────────────────── */
+.parallax-slow  { transform: translateY(calc(var(--py, 0) * .3px)); will-change: transform; }
+.parallax-med   { transform: translateY(calc(var(--py, 0) * .6px)); will-change: transform; }
+.parallax-fast  { transform: translateY(calc(var(--py, 0) * .9px)); will-change: transform; }
+
+/* ─── MOBILE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  #cursor-dot, #cursor-ring { display: none; }
+  body { cursor: auto; }
+  .hide-mobile { display: none !important; }
+}
+
+/* ─── HERO ORBIT RINGS ───────────────────────────────── */
+@keyframes orbitSpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+@keyframes orbitSpinRev { to { transform: translate(-50%,-50%) rotate(-360deg); } }
+
+/* ─── TILT CARD ──────────────────────────────────────── */
+.tilt-card { transition: transform .15s ease; will-change: transform; }
+
+/* ─── TIMELINE DOT PING ──────────────────────────────── */
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+.ping { animation: ping 1.5s cubic-bezier(0,0,.2,1) infinite; }
+
+/* ─── FLOAT ──────────────────────────────────────────── */
+@keyframes floatY {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-14px); }
+}
+
+/* ─── MOBILE FIX (ERROR FIX) ─────────────────────────── */
+@media(max-width:768px){
+  #hero {
+    grid-template-columns: 1fr !important;
+    padding-top: 150px !important;
+    padding-bottom: 100px !important;
+    gap: 2rem !important;
+  }
+  #hero > div:last-of-type {
+    height: clamp(320px, 65vw, 450px) !important;
+    order: -1;
+  }
+}
+
+/* ─── HERO ORBIT RINGS (3D TILT EFFECT) ──────────────── */
+.hero-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-orbit-1 {
+  width: clamp(200px, 25vw, 280px);
+  height: clamp(200px, 25vw, 280px);
+  border: 1px solid rgba(61,204,199, 0.2);
+  animation: orbitSpin 18s linear infinite;
+}
+.hero-orbit-2 {
+  width: clamp(280px, 35vw, 400px);
+  height: clamp(280px, 35vw, 400px);
+  border: 1px dashed rgba(61,204,199, 0.2);
+  animation: orbitSpinRev 28s linear infinite;
+}
+.hero-orbit-3 {
+  width: clamp(360px, 45vw, 520px);
+  height: clamp(360px, 45vw, 520px);
+  border: 1px solid rgba(61,204,199, 0.08);
+  animation: orbitSpin 40s linear infinite;
+}
+
+/* rotateX(65deg) inko flat circles se 3D planetary rings bana dega */
+@keyframes orbitSpin {
+  0% { transform: translate(-50%,-50%) rotateX(65deg) rotateZ(0deg); }
+  100% { transform: translate(-50%,-50%) rotateX(65deg) rotateZ(360deg); }
+}
+@keyframes orbitSpinRev {
+  0% { transform: translate(-50%,-50%) rotateX(65deg) rotateZ(0deg); }
+  100% { transform: translate(-50%,-50%) rotateX(65deg) rotateZ(-360deg); }
+}
