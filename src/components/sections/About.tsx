@@ -62,7 +62,6 @@ function WireOrb({ size=320 }: { size?: number }) {
         }
         ctx.strokeStyle='rgba(104,216,214,.06)'; ctx.lineWidth=.4; ctx.stroke()
       }
-      // orbiting dots
       for(let i=0;i<5;i++){
         const a=t*(.5+i*.1)+i*(Math.PI*2/5)
         const r2=size*.3
@@ -75,7 +74,6 @@ function WireOrb({ size=320 }: { size?: number }) {
         g2.addColorStop(0,`rgba(61,204,199,${.2*bright})`); g2.addColorStop(1,'rgba(0,0,0,0)')
         ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(pr.x,pr.y,9,0,Math.PI*2); ctx.fill()
       }
-      // rings
       for(let ri=0;ri<4;ri++){
         const tilt=.4+ri*.3
         const rad=size*(.2+ri*.06)
@@ -104,8 +102,7 @@ export default function About() {
   const inView = useInView(ref, { once:true, margin:'-80px' })
 
   return (
-    <section id="about" ref={ref} style={{ padding:'clamp(70px,10vw,120px) clamp(20px,5vw,80px)', position:'relative', overflow:'hidden' }}>
-      {/* BG text */}
+    <section id="about" ref={ref} style={{ padding:'clamp(70px,10vw,120px) clamp(16px,5vw,80px)', position:'relative', overflow:'hidden' }}>
       <div style={{
         position:'absolute', right:'-2%', top:'10%',
         fontFamily:'var(--font-cormorant)', fontSize:'clamp(100px,18vw,220px)',
@@ -114,9 +111,8 @@ export default function About() {
       }}>ABOUT</div>
 
       <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-        {/* Header */}
         <motion.div initial={{opacity:0,y:28}} animate={inView?{opacity:1,y:0}:{}}
-          transition={{duration:.9,ease:[.16,1,.3,1]}} style={{ marginBottom:'56px' }}>
+          transition={{duration:.9,ease:[.16,1,.3,1]}} style={{ marginBottom:'clamp(32px, 5vw, 56px)' }}>
           <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'14px' }}>
             <div style={{ width:'28px', height:'1px', background:'var(--c2)' }} />
             <span style={{ fontFamily:'var(--font-space)', fontWeight:300, fontSize:'.62rem', letterSpacing:'.5em', textTransform:'uppercase', color:'var(--c2)' }}>About Me</span>
@@ -126,9 +122,8 @@ export default function About() {
           </h2>
         </motion.div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:'56px', alignItems:'start' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%, 320px),1fr))', gap:'clamp(32px, 5vw, 56px)', alignItems:'start' }}>
 
-          {/* 3D ORB SIDE */}
           <motion.div initial={{opacity:0,x:-32}} animate={inView?{opacity:1,x:0}:{}}
             transition={{duration:.9,delay:.15,ease:[.16,1,.3,1]}}
             style={{ position:'relative' }}>
@@ -137,7 +132,6 @@ export default function About() {
               margin:'0 auto', position:'relative',
             }}>
               <WireOrb size={380} />
-              {/* Glow underneath */}
               <div style={{
                 position:'absolute', bottom:'-20px', left:'50%', transform:'translateX(-50%)',
                 width:'60%', height:'60px',
@@ -146,14 +140,14 @@ export default function About() {
                 pointerEvents:'none',
               }}/>
             </div>
-            {/* Stats grid */}
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginTop:'28px' }}>
+            
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(8px, 2vw, 12px)', marginTop:'28px' }}>
               {STATS.map((s,i)=>(
                 <motion.div key={s.label} className="tilt-card"
                   initial={{opacity:0,scale:.85}} animate={inView?{opacity:1,scale:1}:{}}
                   transition={{duration:.6,delay:.35+i*.08,ease:[.34,1.56,.64,1]}}
                   style={{
-                    padding:'18px 14px',
+                    padding:'clamp(12px, 3vw, 18px) clamp(8px, 2vw, 14px)',
                     background:'rgba(7,190,184,.04)',
                     border:'1px solid rgba(61,204,199,.12)',
                     borderRadius:'14px', textAlign:'center',
@@ -161,22 +155,20 @@ export default function About() {
                   }}
                   onMouseEnter={e=>{const el=e.currentTarget as HTMLElement;el.style.borderColor='rgba(61,204,199,.3)';el.style.background='rgba(7,190,184,.08)';el.style.transform='translateY(-4px)';el.style.boxShadow='0 12px 30px rgba(7,190,184,.15)'}}
                   onMouseLeave={e=>{const el=e.currentTarget as HTMLElement;el.style.borderColor='rgba(61,204,199,.12)';el.style.background='rgba(7,190,184,.04)';el.style.transform='none';el.style.boxShadow='none'}}>
-                  <div style={{ fontSize:'1.2rem', marginBottom:'6px' }}>{s.icon}</div>
-                  <div style={{ fontFamily:'var(--font-cormorant)', fontWeight:600, fontSize:'1.7rem', color:'var(--c3)', lineHeight:1 }}>{s.value}</div>
-                  <div style={{ fontFamily:'var(--font-space)', fontWeight:300, fontSize:'.62rem', letterSpacing:'.15em', textTransform:'uppercase', color:'var(--muted-text)', marginTop:'5px' }}>{s.label}</div>
+                  <div style={{ fontSize:'clamp(1rem, 2.5vw, 1.2rem)', marginBottom:'6px' }}>{s.icon}</div>
+                  <div style={{ fontFamily:'var(--font-cormorant)', fontWeight:600, fontSize:'clamp(1.4rem, 4vw, 1.7rem)', color:'var(--c3)', lineHeight:1 }}>{s.value}</div>
+                  <div style={{ fontFamily:'var(--font-space)', fontWeight:300, fontSize:'clamp(.55rem, 1.5vw, .62rem)', letterSpacing:'.15em', textTransform:'uppercase', color:'var(--muted-text)', marginTop:'5px' }}>{s.label}</div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* TEXT SIDE */}
           <motion.div initial={{opacity:0,x:32}} animate={inView?{opacity:1,x:0}:{}}
             transition={{duration:.9,delay:.25,ease:[.16,1,.3,1]}}
             style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
 
-            {/* Objective card */}
             <div style={{
-              padding:'28px 32px',
+              padding:'clamp(20px, 4vw, 28px) clamp(16px, 5vw, 32px)',
               background:'rgba(7,190,184,.04)',
               border:'1px solid rgba(61,204,199,.12)',
               borderRadius:'20px',
@@ -188,17 +180,16 @@ export default function About() {
                 fontSize:'clamp(.98rem,1.8vw,1.15rem)', color:'rgba(196,255,249,.65)',
                 lineHeight:1.9, fontWeight:300,
               }}>
-                "To secure a position in the banking sector where I can utilize my commerce knowledge and IT skills to handle financial transactions, maintain records, and provide excellent customer service, while contributing to the growth of the organization."
+                &quot;To secure a position in the banking sector where I can utilize my commerce knowledge and IT skills to handle financial transactions, maintain records, and provide excellent customer service, while contributing to the growth of the organization.&quot;
               </p>
             </div>
 
-            {/* Personal info */}
             <div style={{
               background:'rgba(7,190,184,.03)',
               border:'1px solid rgba(61,204,199,.1)',
               borderRadius:'20px', overflow:'hidden',
             }}>
-              <div style={{ padding:'16px 24px', borderBottom:'1px solid rgba(61,204,199,.08)' }}>
+              <div style={{ padding:'16px clamp(16px, 4vw, 24px)', borderBottom:'1px solid rgba(61,204,199,.08)' }}>
                 <span style={{ fontFamily:'var(--font-space)', fontWeight:500, fontSize:'.68rem', letterSpacing:'.3em', textTransform:'uppercase', color:'var(--c2)' }}>Personal Details</span>
               </div>
               {[
@@ -211,38 +202,37 @@ export default function About() {
               ].map(([k,v],i)=>(
                 <div key={k} style={{
                   display:'flex', justifyContent:'space-between', alignItems:'center',
-                  padding:'12px 24px',
+                  padding:'12px clamp(16px, 4vw, 24px)',
                   borderBottom: i<5 ? '1px solid rgba(61,204,199,.06)' : 'none',
                   transition:'background .25s',
                 }}
                 onMouseEnter={e=>(e.currentTarget as HTMLElement).style.background='rgba(61,204,199,.04)'}
                 onMouseLeave={e=>(e.currentTarget as HTMLElement).style.background='transparent'}>
                   <span style={{ fontFamily:'var(--font-space)', fontWeight:300, fontSize:'.78rem', color:'var(--muted-text)' }}>{k}</span>
-                  <span style={{ fontFamily:'var(--font-space)', fontWeight:400, fontSize:'.82rem', color:'var(--deep-text)' }}>{v}</span>
+                  <span style={{ fontFamily:'var(--font-space)', fontWeight:400, fontSize:'.82rem', color:'var(--deep-text)', textAlign:'right', marginLeft:'8px' }}>{v}</span>
                 </div>
               ))}
             </div>
 
-            {/* Languages */}
             <div>
               <p style={{ fontFamily:'var(--font-space)', fontWeight:300, fontSize:'.62rem', letterSpacing:'.4em', textTransform:'uppercase', color:'var(--muted-text)', marginBottom:'14px' }}>Languages</p>
               <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
                 {[{lang:'Urdu',level:'Fluent',pct:98},{lang:'English',level:'Good',pct:72},{lang:'Pashto',level:'Intermediate',pct:55}].map(l=>(
                   <div key={l.lang} style={{
-                    padding:'12px 20px',
+                    padding:'clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px)',
                     background:'rgba(7,190,184,.04)',
                     border:'1px solid rgba(61,204,199,.12)',
                     borderRadius:'50px',
                     display:'flex', alignItems:'center', gap:'12px',
                     transition:'all .3s',
+                    flex:'1 1 auto',
                   }}
                   onMouseEnter={e=>{const el=e.currentTarget as HTMLElement;el.style.borderColor='rgba(61,204,199,.3)';el.style.background='rgba(61,204,199,.08)'}}
                   onMouseLeave={e=>{const el=e.currentTarget as HTMLElement;el.style.borderColor='rgba(61,204,199,.12)';el.style.background='rgba(7,190,184,.04)'}}>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div style={{ fontFamily:'var(--font-space)', fontWeight:500, fontSize:'.82rem', color:'var(--deep-text)' }}>{l.lang}</div>
                       <div style={{ fontFamily:'var(--font-space)', fontWeight:300, fontSize:'.68rem', color:'var(--muted-text)' }}>{l.level}</div>
                     </div>
-                    {/* Conic progress */}
                     <div style={{ width:'38px', height:'38px', borderRadius:'50%', background:`conic-gradient(var(--c2) ${l.pct}%,rgba(61,204,199,.1) 0%)`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                       <div style={{ width:'26px', height:'26px', borderRadius:'50%', background:'#031a1a', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'var(--font-space)', fontSize:'.55rem', fontWeight:500, color:'var(--c3)' }}>{l.pct}%</div>
                     </div>

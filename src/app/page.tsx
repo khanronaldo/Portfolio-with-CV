@@ -42,25 +42,34 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-transparent overflow-x-hidden relative z-10">
+    /* 1. 'min-h-[100dvh]' use kiya taake mobile browser UI se height kharab na ho.
+       2. 'px-4 md:px-0' add kiya taake mobile par content bilkul corners se na chipke.
+    */
+    <main className="min-h-[100dvh] w-full bg-transparent overflow-x-hidden relative z-10 px-4 sm:px-6 md:px-0">
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#07beb8] via-[#3dccc7] to-[#c4fff9] origin-left z-[9999]"
+        className="fixed top-0 left-0 right-0 h-[2px] md:h-[3px] bg-gradient-to-r from-[#07beb8] via-[#3dccc7] to-[#c4fff9] origin-left z-[9999]"
         style={{ scaleX }}
       />
+      
       <Nav />
-      <Hero />
-      <div className="section-divider" />
-      <About />
-      <div className="section-divider" />
-      <Education />
-      <div className="section-divider" />
-      <Experience />
-      <div className="section-divider" />
-      <Skills />
-      <div className="section-divider" />
-      <CVModal />
-      <div className="section-divider" />
-      <Contact />
+      
+      {/* Sections Wrapper: Taake spacing mobile par tight rahe aur desktop par normal */}
+      <div className="flex flex-col gap-10 md:gap-0">
+        <Hero />
+        <div className="section-divider opacity-50" />
+        <About />
+        <div className="section-divider opacity-50" />
+        <Education />
+        <div className="section-divider opacity-50" />
+        <Experience />
+        <div className="section-divider opacity-50" />
+        <Skills />
+        <div className="section-divider opacity-50" />
+        <CVModal />
+        <div className="section-divider opacity-50" />
+        <Contact />
+      </div>
+
       <Footer />
     </main>
   )
