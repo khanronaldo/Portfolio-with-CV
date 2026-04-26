@@ -19,7 +19,7 @@ const CV_SECTIONS = [
       <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
         {[
           { role:'Teacher & Educator', co:'Educational Institutions', dur:'4 Years' },
-          { role:'Sales Executive – EFU Insurance', co:'EFU Life Insurance', dur:'2 Months' },
+          { role:'Sales Executive – Health Insurance', co:'Health Life Insurance', dur:'2 Months' },
           { role:'Real Estate Sales Executive', co:'Real Estate Firm', dur:'8 Months' },
           { role:'Freelance Creative Designer', co:'Self-Employed', dur:'Ongoing' },
         ].map(j=>(
