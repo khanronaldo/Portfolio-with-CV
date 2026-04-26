@@ -169,7 +169,7 @@ export default function CVModal() {
                 {/* Download button */}
                 <div style={{ paddingTop:'16px', borderTop:'1px solid rgba(61,204,199,.1)', display:'flex', justifyContent:'center' }}>
                   {/* 🔥 DOWNLOAD LINK UPDATED 🔥 */}
-                  <a href="/Zainishba_Noor_CV.pdf" download="Zainishba_Noor_CV.pdf" style={{
+                  <a href="/Final Cv.pdf" download="Final_Cv.pdf" style={{
                     fontFamily:'var(--font-space)', fontWeight:500, fontSize:'.72rem',
                     letterSpacing:'.25em', textTransform:'uppercase',
                     padding:'13px 32px',
